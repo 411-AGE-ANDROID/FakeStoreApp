@@ -11,6 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.fakestoreapp.screens.ProductDetailScreen
 import com.example.fakestoreapp.screens.ProductsScreen
 import com.example.fakestoreapp.ui.theme.FakeStoreAppTheme
 
@@ -20,10 +26,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FakeStoreAppTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ProductsScreen(
-                        innerPadding = innerPadding
-                    )
+                    NavHost(
+                        navController = navController,
+                        startDestination = "products"
+                    ){
+                        composable(route = "products") {
+                            ProductsScreen(
+                                innerPadding = innerPadding,
+                                navController = navController
+                            )
+                        }
+                        composable(
+                            route = "products/{id}",
+                            arguments = listOf(
+                                navArgument("id"){
+                                    type= NavType.IntType
+                                    nullable=false
+                                }
+                            )
+                        ) { backStack ->
+                            val id = backStack.arguments?.getInt("id") ?: 0
+                            ProductDetailScreen(
+                                id =id
+                            )
+                        }
+                    }
+
                 }
             }
         }

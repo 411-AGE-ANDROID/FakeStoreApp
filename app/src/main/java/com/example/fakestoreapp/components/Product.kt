@@ -1,5 +1,6 @@
 package com.example.fakestoreapp.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,12 +17,18 @@ import com.example.fakestoreapp.models.productList
 import com.example.fakestoreapp.ui.theme.FakeStoreAppTheme
 
 @Composable
-fun ProductItem(product: Product){
+fun ProductItem(
+    product: Product,
+    onClick : () -> Unit = { }
+){
     Column(
         modifier = Modifier
             .padding(20.dp)
             .height(200.dp)
             .fillMaxWidth()
+            .clickable{
+                onClick()
+            }
 
     ) {
         AsyncImage(
